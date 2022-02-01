@@ -1,5 +1,12 @@
-FROM ubuntu:xenial
+FROM python:3.9-slim
+ #ubuntu:focal
+COPY requirements.txt /requirements.txt
+# git is for ansible-lint
 RUN \
-  apt-get update && \
-  apt-get install -y python-pip libssl-dev && \
-  pip install ansible==2.6.1 ansible-lint==3.4.23
+  apt-get update \
+  && apt-get install -y \
+    git \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  && pip3 --no-cache-dir install -r /requirements.txt
+ENTRYPOINT bash
